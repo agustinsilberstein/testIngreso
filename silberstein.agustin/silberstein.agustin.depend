@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1475885676 source:d:\silberstein.agustin\parcial\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1475885940 source:d:\silberstein.agustin\parcial\silberstein.agustin\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"lib.h"
+
+1475885590 d:\silberstein.agustin\parcial\silberstein.agustin\lib.h
+
+1475886286 source:c:\users\alumno\desktop\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1475885590 c:\users\alumno\desktop\silberstein.agustin\lib.h
+
