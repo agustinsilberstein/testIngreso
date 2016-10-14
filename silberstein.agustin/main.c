@@ -9,28 +9,37 @@ int main()
 {
     // arrays de clientes
     cliente clienteArray[MAX_QTY];
+
     //________________________________________________
 
 
     // variables auxiliares
-    char nombreAux[51];
+    char nombreAux[200];
 
-    char apellidoAux[80];
-    int idAux;
+    char apellidoAux[60];
     int dniAux;
     int motivoAux;
     int tiempoAux;
     int estadoAux;
-
+    int idAux;
+    int idAlquilerAux;
+    int operadorAux;
+    int auxInt;
     //________________________________________________
 
     int freePlaceIndex;
     int foundIndex;
+    int foundIndexMaquinaria;
     int option = 0;
     char opcionBuffer[400];
 
+     setMaquinariaid(clienteArray, MAX_QTY);
     setStatus(clienteArray,MAX_QTY,0);
-    setStatusAlquiler(clienteArray,MAX_QTY,-1);
+    setid(clienteArray,MAX_QTY);
+setAlquilerStatus( clienteArray,10,0 );
+
+
+
 
 
 
@@ -51,26 +60,14 @@ int main()
                     break;
                 }
 
-                idAux = getValidInt("Ingrese el Id del cliente: ","El Id debe ser numerico\n", 1, 15000);
-                if(findclienteByCode(clienteArray,MAX_QTY,idAux) != -1)
-                {
-                    printf("\n\nEL ID YA EXISTE!!!\n");
-                    break;
-                }
+
 
                  dniAux = getValidInt("Ingrese el DNI: ","El DNI debe ser numerico\n", 10000000, 99999999);
-
-
-
-
-
-
                 getValidString("Ingrese el Nombre del cliente: ","El nombre debe estar compuesto solo por letras\n", nombreAux);
                 getValidString("Ingrese el Apellido del cliente: ","El Apellido debe ser solo por letras\n", apellidoAux);
 
+                setCliente(clienteArray,freePlaceIndex,nombreAux,apellidoAux,dniAux);
 
-
-                setCliente(clienteArray,freePlaceIndex,idAux,nombreAux,apellidoAux,dniAux);
 
 
 
@@ -80,7 +77,7 @@ int main()
 
 
                 idAux = getValidInt("Ingrese el Id del cliente a modificar: ","El Id debe ser numerico\n", 1, 15000);
-                foundIndex = findclienteByCode(clienteArray,MAX_QTY,idAux);
+                foundIndex = findclienteById(clienteArray,MAX_QTY,idAux);
                 if(foundIndex == -1)
                 {
                     printf("\n\nNO SE ENCUENTRA ESE ID\n");
@@ -92,7 +89,7 @@ int main()
 
                 getValidString("Ingrese el Nombre del cliente:  ","El nombre debe estar compuesto solo por letras\n", nombreAux);
 
-                setCliente(clienteArray,foundIndex,idAux,nombreAux,apellidoAux,dniAux);
+                setCliente(clienteArray,foundIndex,nombreAux,apellidoAux,dniAux);
 
                 break;
 
@@ -103,13 +100,14 @@ int main()
 
 
                  idAux = getValidInt("Ingrese el Id a dar de baja: ","El Id debe ser numerico\n", 1, 15000);
-                foundIndex = findclienteByCode(clienteArray,MAX_QTY,idAux);
+                foundIndex = findclienteById(clienteArray,MAX_QTY,idAux);
                 if(foundIndex == -1)
                 {
                     printf("\n\nNO SE ENCUENTRA ESE ID\n");
                     break;
                 }
-                clienteArray[foundIndex].status = 0;
+                clienteArray[foundIndex].status = -1;
+                printf("El cliente %s %s ha sido dado de baja",clienteArray[foundIndex].nombre,clienteArray[foundIndex].apellido);
                 break;
 
 
@@ -117,36 +115,84 @@ int main()
 
 
             case 4: // NUEVO ALQUILER
-                 idAux = getValidInt("Ingrese el Id del cliente para registrar nuevo alquiler: ","El Id debe ser numerico\n", 1, 15000);
-                foundIndex = findclienteByCode(clienteArray,MAX_QTY,idAux);
+
+            idAux = getValidInt("Ingrese el Id del cliente: ","El Id debe ser numerico\n", 1, 15000);
+
+
+                foundIndex = findclienteById(clienteArray,MAX_QTY,idAux);
+
                 if(foundIndex == -1)
                 {
                     printf("\n\nNO SE ENCUENTRA ESE ID\n");
                     break;
                 }
 
+                 freePlaceIndex = findEmptyPlaceMaquinaria(clienteArray,idAux,MAX_QTY);
+                if(freePlaceIndex == -1)
+                {
+                    printf("\n\nNO QUEDAN LUGARES LIBRES!!!\n");
+                    break;
+                }
+
+
+
                motivoAux= getValidInt("Ingrese el equipo alquilado:\n 1-AMOLADORA\n2-MEZCLADORA\n3-TALADRO\n","Debe ser una opcion entre 1 Y 3\n",1,3);
-               tiempoAux=getValidInt("Ingrese el tiempo aproximado del alquiler en dias: ","Debe estar entre 1 y 500",1,500);
-               setAlquiler(clienteArray,foundIndex,idAux,motivoAux,tiempoAux);
+               tiempoAux=getValidInt("Ingrese el tiempo aproximado del alquiler en dias: ","Debe estar entre 1 y 10000\n",1,10000);
+               operadorAux=getValidInt("Ingrese el numero de operador: ","Debe estar entre 1 y 1000\n",1,1000);
+               setAlquiler(clienteArray,foundIndex,freePlaceIndex,motivoAux,tiempoAux,operadorAux);
+
                break;
 
 
 
+            case 5:  //FIN ALQUILER
 
 
+                idAux = getValidInt("Ingrese el Id del cliente: ","El Id debe ser numerico\n", 1, 15000);
 
-                break;
+                foundIndex = findclienteById(clienteArray,MAX_QTY,idAux);
 
-            case 5: // FIN DEL ALQUILER
-               idAux = getValidInt("Ingrese el Id que finalizo el alquiler: ","El Id debe ser numerico\n", 1, 15000);
-                foundIndex = findclienteByCode(clienteArray,MAX_QTY,idAux);
                 if(foundIndex == -1)
                 {
                     printf("\n\nNO SE ENCUENTRA ESE ID\n");
                     break;
                 }
-                clienteArray[foundIndex].estadoAlquiler = 0;
+
+                unsetAlquiler(clienteArray,foundIndex);
                 break;
+
+            case 6://INFORMAR
+
+               auxInt=informarMayorAlquileres(clienteArray,MAX_QTY);
+               int i;
+               if(auxInt!=-1)
+                {
+                for(i=0;i<MAX_QTY;i++)
+                    {
+                        if(auxInt==clienteArray[i].cantidadAlquilada)
+                    {
+
+                printf("El cliente con mas alquileres es: %s %s con %d alquileres\n",clienteArray[i].nombre,clienteArray[i].apellido,clienteArray[i].cantidadAlquilada);
+                    }
+               }
+               }
+
+
+            informarEquiposMasAlquilados(clienteArray,MAX_QTY);
+            informarTiempo(clienteArray,MAX_QTY);
+
+
+
+
+
+
+
+
+
+    //INFORMAR
+
+
+
 
 
 

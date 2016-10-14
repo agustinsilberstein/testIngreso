@@ -5,6 +5,48 @@
 #include "lib.h"
 
 
+
+/**
+ * \brief Inicializa el Id en un array de clientes
+ * \param clienteArray Es el array en el cual buscar
+ * \param arrayLenght Indica la logitud del array
+ * \param value Es el valor que se asignara a status
+ * \return -
+ *
+ */
+void setid(cliente clienteArray[], int arrayLenght)
+{
+    int i;
+    for(i=0;i < arrayLenght; i++)
+    {
+       clienteArray[i].id = i+1;
+    }
+}
+
+
+/**
+ * \brief Inicializa el Id en un array de clientes
+ * \param clienteArray Es el array en el cual buscar
+ * \param arrayLenght Indica la logitud del array
+ * \param value Es el valor que se asignara a status
+ * \return -
+ *
+ */
+void setMaquinariaid(cliente clienteArray[],int arrayLenght)
+{
+    int i,j;
+    for(i=0;i < arrayLenght; i++)
+    {
+
+
+        for(j=0;j < 20; j++)
+            {
+
+                    clienteArray[i].maquinasAlquiladas[j].idAlquiler = 1+j+i*20;
+            }
+    }
+
+}
 /**
  * \brief Inicializa el status en un array de clientes
  * \param clienteArray Es el array en el cual buscar
@@ -17,28 +59,38 @@ void setStatus(cliente clienteArray[],int arrayLenght,int value)
 {
     int i;
     for(i=0;i < arrayLenght; i++)
-    {
+        {
+
        clienteArray[i].status = value;
-    }
+        }
 }
 
 
+
 /**
- * \brief Inicializa el status en un array de clientes
+ * \brief Inicializa el status en un array de maquinas
  * \param clienteArray Es el array en el cual buscar
  * \param arrayLenght Indica la logitud del array
  * \param value Es el valor que se asignara a status
  * \return -
  *
  */
-void setStatusAlquiler(cliente clienteArray[],int arrayLenght,int value)
+void setAlquilerStatus(cliente clienteArray[],int arrayLenght,int value)
 {
-    int i;
-    for(i=0;i < arrayLenght; i++)
-    {
-       clienteArray[i].estadoAlquiler = value;
-    }
+    int i, j;
+
+        for(i=0;i<arrayLenght;i++)
+        {
+
+
+        for(j=0;j < 20; j++)
+        {
+              clienteArray[i].maquinasAlquiladas[j].estadoAlquiler = value;
+
+        }
 }
+}
+
 
 
 /**
@@ -49,18 +101,20 @@ void setStatusAlquiler(cliente clienteArray[],int arrayLenght,int value)
  * \return Si no hay ocurrencia (-1) y si la hay la posicion de la misma (i)
  *
  */
-int findclienteByCode(cliente clienteArray[],int arrayLenght,int code)
+int findclienteById(cliente clienteArray[],int arrayLenght,int id)
 {
     int i;
     for(i=0;i < arrayLenght; i++)
     {
-        if(clienteArray[i].code == code && clienteArray[i].status == 1)
+        if(clienteArray[i].id == id && clienteArray[i].status == 1)
         {
             return i;
         }
     }
     return -1;
 }
+
+
 
 
 /**
@@ -83,6 +137,30 @@ int findEmptyPlace(cliente clienteArray[],int arrayLenght)
     return -1;
 }
 
+/**
+ * \brief Busca el primer lugar no utilizado en el array
+ * \param bookArray Es el array en el cual buscar
+ * \param arrayLenght Indica la logitud del array
+ * \return Si no hay lugares libres (-1) y si la hay la posicion del mismo (i)
+ *
+ */
+int findEmptyPlaceMaquinaria(cliente clienteArray[],int i, int arrayLenght)
+{
+    int j;
+    i=i-1;
+
+
+        for(j=0;j<20;j++)
+            {
+            if(clienteArray[i].maquinasAlquiladas[j].estadoAlquiler == 0)
+            {
+                return j+i*20;
+            }
+    }
+    return -1;
+}
+
+
 
 
 
@@ -97,14 +175,15 @@ int findEmptyPlace(cliente clienteArray[],int arrayLenght)
  * \return -
  *
  */
-void setCliente(cliente clienteArray[],int freePlaceIndex, int idAux,char nombreAux[], char apellidoAux[],int stockAux)
+void setCliente(cliente clienteArray[],int freePlaceIndex,char nombreAux[], char apellidoAux[],int dniAux)
 {
 
-   clienteArray[freePlaceIndex].apellido = apellidoAux;
-    strcpy(clienteArray[freePlaceIndex].title,nombreAux);
-    clienteArray[freePlaceIndex].dni = stockAux;
-    clienteArray[freePlaceIndex].code = idAux;
+    strcpy(clienteArray[freePlaceIndex].apellido,apellidoAux);
+    strcpy(clienteArray[freePlaceIndex].nombre,nombreAux);
+    clienteArray[freePlaceIndex].dni = dniAux;
+
     clienteArray[freePlaceIndex].status = 1;
+    printf("\n\nEl numero de ID de %s %s es: %d ",clienteArray[freePlaceIndex].nombre,clienteArray[freePlaceIndex].apellido,clienteArray[freePlaceIndex].id);
 }
 
 
@@ -113,22 +192,170 @@ void setCliente(cliente clienteArray[],int freePlaceIndex, int idAux,char nombre
  * \param clienteArray Es el array de clientes
  * \param freePlaceIndex Indica la posicion a setear
  * \param idAux Id del cliente
- * \param motivoAux que se alquilo
+ * \param motivoAux maquinaria que se alquilo
  * \param tiempoAux tiempo aproximado de alquiler
  * \param estadoAlquiler estado del alquiler
  * \return -
  *
  */
-void setAlquiler(cliente clienteArray[],int freePlaceIndex, int idAux,int motivoAux, int tiempoAux)
+void setAlquiler(cliente clienteArray[],int freePlaceIndex,int freePlaceIndexMaquinaria, int motivoAux, int tiempoAux, int operadorAux)
 {
 
-   clienteArray[freePlaceIndex].motivo = motivoAux;
-   clienteArray[freePlaceIndex].tiempo = tiempoAux;
 
-    clienteArray[freePlaceIndex].code = idAux;
-    clienteArray[freePlaceIndex].estadoAlquiler = 1;
+
+   clienteArray[freePlaceIndex].maquinasAlquiladas[freePlaceIndexMaquinaria].motivo = motivoAux;
+   clienteArray[freePlaceIndex].maquinasAlquiladas[freePlaceIndexMaquinaria].tiempoEstimado = tiempoAux;
+    clienteArray[freePlaceIndex].maquinasAlquiladas[freePlaceIndexMaquinaria].operador=operadorAux;
+     clienteArray[freePlaceIndex].maquinasAlquiladas[freePlaceIndexMaquinaria].estadoAlquiler=1;
+     clienteArray[freePlaceIndex].cantidadAlquilada=clienteArray[freePlaceIndex].cantidadAlquilada+1;
+
+
+printf("%d",clienteArray[freePlaceIndex].cantidadAlquilada);
+
+
+
+    printf("\n Id de Alquiler: %d\n Cliente: %s %s \n ",clienteArray[freePlaceIndex].maquinasAlquiladas[freePlaceIndexMaquinaria].idAlquiler,clienteArray[freePlaceIndex].nombre,clienteArray[freePlaceIndex].apellido);
+
 }
 
+
+void unsetAlquiler (cliente clienteArray[],int freePlaceIndex)
+{
+    printf("Elija que id de alquiler del cliente %s %s finalizo\n \n ",clienteArray[freePlaceIndex].nombre,clienteArray[freePlaceIndex].apellido);
+    int j;
+    int opcion;
+    int tiempo;
+    for(j=0;j<20;j++)
+    {
+        if(clienteArray[freePlaceIndex].maquinasAlquiladas[j].estadoAlquiler ==1)
+        {
+        printf("ID DEL ALQUILER: %d || MOTIVO: %d (1 AMOLADORA, 2 MEZCLADORA, 3 TALADRO) \n\n",clienteArray[freePlaceIndex].maquinasAlquiladas[j].idAlquiler,clienteArray[freePlaceIndex].maquinasAlquiladas[j].motivo);
+        }
+    }
+        opcion = getValidInt("Ingrese el Id del alquiler: ","Debe ser un numero entre 1 y 20",1,20);
+        opcion=opcion-1;
+
+        if(clienteArray[freePlaceIndex].maquinasAlquiladas[opcion].estadoAlquiler==1)
+            {
+                    tiempo=getValidInt("Ingrese Tiempo total del alquiler en dias: ","Debe ser entre 1 y 1000 dias",1,1000);
+                    clienteArray[freePlaceIndex].maquinasAlquiladas[opcion].tiempoReal=tiempo;
+                clienteArray[freePlaceIndex].maquinasAlquiladas[opcion].estadoAlquiler=-1;
+                clienteArray[freePlaceIndex].cantidadAlquilada=clienteArray[freePlaceIndex].cantidadAlquilada-1;
+
+                printf("ALQUILER FINALIZADO\n");
+
+
+            }
+            else{printf("OPCION NO VALIDA\n");}
+
+        }
+
+
+        int informarMayorAlquileres(cliente clienteArray[],int arrayLenght)
+            {
+                int i,j;
+                int mayorAlquileres;
+                mayorAlquileres=-1;
+
+                        for(i=0;i<arrayLenght; i++)
+                            for(j=0;j<20;j++)
+                        {
+
+
+
+                                {
+                                    if(mayorAlquileres < clienteArray[i].cantidadAlquilada && clienteArray[i].maquinasAlquiladas[j].estadoAlquiler == 1)
+                                    {
+                                        mayorAlquileres = clienteArray[i].cantidadAlquilada;
+                                    }
+                                }
+                        }
+
+                                    return mayorAlquileres;
+
+                        if(mayorAlquileres == -1)
+                        {
+                            return -1;
+                        }
+
+            }
+
+                int informarEquiposMasAlquilados(cliente clienteArray[], int arrayLenght)
+                {
+                    int i,j;
+
+                            int contador1=0;
+                            int contador2=0;
+                            int contador3=0;
+                    for(i=0;i<arrayLenght;i++)
+                    {
+                        for(j=0;j<20;j++)
+                        {
+
+                            if(clienteArray[i].maquinasAlquiladas[j].motivo==1&&clienteArray[i].status==1)
+                            {
+                                contador1=contador1+1;
+                            }
+
+                            if(clienteArray[i].maquinasAlquiladas[j].motivo==2&&clienteArray[i].status==1)
+                            {
+                                contador2=contador2+1;
+                            }
+
+                            if(clienteArray[i].maquinasAlquiladas[j].motivo==3&&clienteArray[i].status==1)
+                            {
+                                contador3=contador3+1;
+                            }
+                        }
+                    }
+                    if(contador1>=contador2&&contador1>=contador3)
+                    {
+                        printf("El equipo mas alquilado es la AMOLADORA con %d unidades alquiladas\n",contador1);
+
+                    }
+
+                            if(contador2>=contador1&&contador2>=contador3)
+                                {
+                                    printf("El equipo mas alquilado es la MEZCLADORA con %d unidades alquiladas\n",contador2);
+
+                                }
+
+                                    if(contador3>=contador1&&contador3>=contador1)
+                                {
+
+                    {
+                        printf("El equipo mas alquilado es el TALADRO con %d unidades alquiladas\n",contador3);
+
+                    }
+
+
+
+
+                        }
+                    }
+
+
+void informarTiempo(cliente clienteArray[],int arrayLenght)
+    {
+        int i,j;
+        int acumulador=0;
+        int contador=0;
+        float promedio=0;
+        for(i=0;i<arrayLenght;i++)
+        {
+            for(j=0;j<20;j++)
+            {
+                if(clienteArray[i].maquinasAlquiladas[j].estadoAlquiler==-1)
+                {
+
+                    contador=contador+1;
+                    acumulador=acumulador+clienteArray[i].maquinasAlquiladas[j].tiempoReal;
+                    promedio=acumulador/contador;
+                }
+            }
+        }
+        printf("El promedio de dias de alquiler es: %2.f",promedio);
+    }
 
 
 
@@ -176,6 +403,7 @@ char getChar(char mensaje[])
     scanf("%c",&auxiliar);
     return auxiliar;
 }
+
 
 
 /**
@@ -432,6 +660,8 @@ int menuOpciones(char texto[],char auxOpcion[])
 
             return atoi(auxOpcion);
         }
+
+
 
 
 
