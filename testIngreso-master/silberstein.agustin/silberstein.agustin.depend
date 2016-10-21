@@ -1,0 +1,70 @@
+# depslib dependency file v1.0
+1475885676 source:d:\silberstein.agustin\parcial\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1475885940 source:d:\silberstein.agustin\parcial\silberstein.agustin\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"lib.h"
+
+1475885590 d:\silberstein.agustin\parcial\silberstein.agustin\lib.h
+
+1475886286 source:c:\users\alumno\desktop\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1475885590 c:\users\alumno\desktop\silberstein.agustin\lib.h
+
+1476413972 source:e:\copy\pato\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1476413369 e:\copy\pato\silberstein.agustin\lib.h
+
+1476413886 source:e:\copy\pato\silberstein.agustin\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"lib.h"
+
+1476433364 source:c:\users\paulita\desktop\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1476433057 c:\users\paulita\desktop\silberstein.agustin\lib.h
+
+1476432985 source:c:\users\paulita\desktop\silberstein.agustin\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"lib.h"
+
+1477080401 source:c:\users\tomyo\desktop\testingreso-master\silberstein.agustin\lib.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"lib.h"
+
+1476419390 c:\users\tomyo\desktop\testingreso-master\silberstein.agustin\lib.h
+
+1477080127 source:c:\users\tomyo\desktop\testingreso-master\silberstein.agustin\main.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"lib.h"
+
